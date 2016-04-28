@@ -85,7 +85,15 @@
 		</tr>
 	</thead>
 	<tbody>
+		<?php $init_cat = ''; // Define the variable outside of the loop below ?>
 		<?php $items = $wpo_wcpdf->get_order_items(); if( sizeof( $items ) > 0 ) : foreach( $items as $item_id => $item ) : ?>
+		<?php
+		$cur_cat = $item['prod_cat'];  //Reads the value of the product's category
+        		if ( $cur_cat !== $init_cat ) {  //If it's different than the last one to come 'round, then display it by inserting a new row:
+                		echo '<tr><td colspan="5" style="background-color: #000; color: #fff; text-align:center; text-transform: uppercase; letter-spacing: 1em;">- ' . strip_tags($cur_cat) . ' -</td></tr>';
+                		$init_cat = $cur_cat;  //Advance the current category value
+        		}
+		?>
 		<tr class="<?php echo apply_filters( 'wpo_wcpdf_item_row_class', $item_id, $wpo_wcpdf->export->template_type, $wpo_wcpdf->export->order, $item_id ); ?>">
 			<td class="product">
 				<?php $description_label = __( 'Description', 'wpo_wcpdf' ); // registering alternate label translation ?>
